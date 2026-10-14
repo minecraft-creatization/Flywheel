@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "flywheel",
+  "version": "${version}",
+  "name": "Flywheel",
+  "description": "A modern engine for rendering large amounts of animated geometry.",
+  "authors": ["Jozufozu", "Engine-Room"],
+  "contact": {
+    "homepage": "https://github.com/minecraft-creatization/Flywheel",
+    "sources": "https://github.com/minecraft-creatization/Flywheel"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.zurrtum.create.client.flywheel.impl.Flywheel"
+    ]
+  },
+  "accessWidener": "flywheel.classtweaker",
+  "mixins": [
+    "flywheel.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=25"
+  }
+}

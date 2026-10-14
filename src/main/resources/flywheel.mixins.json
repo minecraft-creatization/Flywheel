@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "package": "com.zurrtum.create.client.flywheel.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "minVersion": "0.8",
+  "plugin": "com.zurrtum.create.client.flywheel.mixin.FlwMixinPlugin",
+  "client": [
+    "BlockEntityMixin",
+    "BlockEntityTypeMixin",
+    "CameraRenderStateMixin",
+    "ClientLevelDataMixin",
+    "EntityTypeMixin",
+    "FogRendererMixin",
+    "GlStateManagerMixin",
+    "LevelChunkMixin",
+    "LevelRenderStateMixin",
+    "LightingMixin",
+    "ModelBakeryMixin",
+    "ModelManagerMixin",
+    "PoseStackMixin",
+    "RenderSystemMixin",
+    "SectionCompilerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

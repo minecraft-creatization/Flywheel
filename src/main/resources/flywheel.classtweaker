@@ -1,0 +1,92 @@
+classTweaker v1 official
+
+# Flywheel 26.3 -- standalone module.
+#
+# Selection method (recorded so the set can be re-derived and audited):
+#   1. take every create.classtweaker entry whose OWNER CLASS the Flywheel sources actually import;
+#   2. drop Create's own content-registration API (Blocks.register/never, Fluids.register), which a
+#      rendering library never touches;
+#   3. add the supertype-dispatch cases a text scan cannot see (a member declared on a superclass but
+#      invoked through a subclass receiver -- getPlayerInfo on AbstractClientPlayer via LocalPlayer);
+#   4. whatever remains missing is appended as the compiler proves it missing.
+#
+# Over-inclusion here is harmless (an accessible entry only widens access); UNDER-inclusion is a hard
+# compile error, so the set is verified by compiling the module, not by inspection.
+#
+# The GL entries are load-bearing: Flywheel's backend is GL-only and 26.3 exposes raw GL
+# (GlDevice, the active texture unit, RenderType.create) only through the classtweaker.
+accessible class com/mojang/renderpearl/backend/opengl/GlDevice
+accessible field com/mojang/renderpearl/frontend/FrontendGpuDevice backend Lcom/mojang/renderpearl/backend/api/GpuDeviceBackend;
+accessible class net/minecraft/client/resources/model/BlockStateModelLoader$LoadedBlockStateModelDispatcher
+accessible class net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl
+accessible class net/minecraft/client/resources/model/ModelManager$ResolvedModels
+accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+accessible class net/minecraft/world/level/lighting/SkyLightSectionStorage$SkyDataLayerStorageMap
+accessible field com/mojang/renderpearl/backend/opengl/GlStateManager activeTexture I
+accessible field com/mojang/blaze3d/vertex/BufferBuilder vertices I
+accessible field com/mojang/blaze3d/vertex/PoseStack poses Ljava/util/List;
+accessible field com/mojang/blaze3d/vertex/PoseStack$Pose trustedNormals Z
+accessible field net/minecraft/client/gui/components/debug/DebugScreenEntries ENTRIES_BY_ID Ljava/util/Map;
+accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
+accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+accessible field net/minecraft/client/multiplayer/ClientLevel minecraft Lnet/minecraft/client/Minecraft;
+accessible field net/minecraft/client/multiplayer/ClientSuggestionProvider minecraft Lnet/minecraft/client/Minecraft;
+accessible field net/minecraft/client/renderer/fog/FogRenderer FOG_ENVIRONMENTS Ljava/util/List;
+accessible field net/minecraft/client/renderer/GameRenderer useUiLightmap Z
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState cachedModelBoundingBox Lnet/minecraft/world/phys/AABB;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState displayContext Lnet/minecraft/world/item/ItemDisplayContext;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState foilType Lnet/minecraft/client/renderer/item/ItemStackRenderState$FoilType;
+accessible field net/minecraft/client/renderer/rendertype/RenderType state Lnet/minecraft/client/renderer/rendertype/RenderSetup;
+accessible field net/minecraft/commands/synchronization/ArgumentTypeInfos BY_CLASS Ljava/util/Map;
+accessible field net/minecraft/util/LightCoordsUtil MAX_SMOOTH_LIGHT_LEVEL I
+accessible field net/minecraft/world/entity/Entity DATA_POSE Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible field net/minecraft/world/entity/Entity removalReason Lnet/minecraft/world/entity/Entity$RemovalReason;
+accessible field net/minecraft/world/entity/LivingEntity lastEquipmentItems Ljava/util/Map;
+accessible field net/minecraft/world/item/ItemStack components Lnet/minecraft/core/component/PatchedDataComponentMap;
+accessible field net/minecraft/world/item/ItemStack item Lnet/minecraft/core/Holder;
+accessible field net/minecraft/world/level/lighting/LayerLightSectionStorage visibleSectionData Lnet/minecraft/world/level/lighting/DataLayerStorageMap;
+accessible field net/minecraft/world/level/lighting/LightEngine storage Lnet/minecraft/world/level/lighting/LayerLightSectionStorage;
+accessible field net/minecraft/world/level/lighting/SkyLightSectionStorage$SkyDataLayerStorageMap currentLowestY I
+accessible field net/minecraft/world/level/lighting/SkyLightSectionStorage$SkyDataLayerStorageMap topSections Lit/unimi/dsi/fastutil/longs/Long2IntOpenHashMap;
+accessible method com/mojang/blaze3d/vertex/PoseStack$Pose computeNormalMatrix ()V
+accessible method net/minecraft/client/model/geom/ModelPart compile (Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+accessible method net/minecraft/client/multiplayer/ClientLevel getEntities ()Lnet/minecraft/world/level/entity/LevelEntityGetter;
+accessible method net/minecraft/client/renderer/entity/EntityRenderer affectedByCulling (Lnet/minecraft/world/entity/Entity;)Z
+accessible method net/minecraft/client/renderer/entity/EntityRenderer getBoundingBoxForCulling (Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/world/phys/AABB;
+accessible method net/minecraft/client/renderer/feature/ItemFeatureRenderer computeFoilDecalPose (Lnet/minecraft/world/item/ItemDisplayContext;Lcom/mojang/blaze3d/vertex/PoseStack$Pose;)Lcom/mojang/blaze3d/vertex/PoseStack$Pose;
+accessible method net/minecraft/client/renderer/feature/ItemFeatureRenderer getLayerColorSafe ([ILnet/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo;)I
+accessible method net/minecraft/client/renderer/rendertype/RenderType create (Ljava/lang/String;Lnet/minecraft/client/renderer/rendertype/RenderSetup;)Lnet/minecraft/client/renderer/rendertype/RenderType;
+accessible method net/minecraft/client/resources/model/ModelDiscovery getOrCreateModel (Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/resources/model/ModelDiscovery$ModelWrapper;
+accessible method net/minecraft/world/entity/Entity setLevel (Lnet/minecraft/world/level/Level;)V
+accessible method net/minecraft/world/entity/Entity markHurt ()V
+accessible method net/minecraft/world/entity/LivingEntity setLastHurtByPlayer (Lnet/minecraft/world/entity/EntityReference;I)V
+accessible method net/minecraft/world/item/ItemStack <init> (Lnet/minecraft/core/Holder;ILnet/minecraft/core/component/PatchedDataComponentMap;)V
+accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
+accessible method net/minecraft/world/level/Level getEntities ()Lnet/minecraft/world/level/entity/LevelEntityGetter;
+accessible method net/minecraft/world/level/lighting/LayerLightSectionStorage getDataLayer (JZ)Lnet/minecraft/world/level/chunk/DataLayer;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState activeLayerCount I
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState layers [Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState itemTransform Lnet/minecraft/client/resources/model/cuboid/ItemTransform;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState localTransform Lorg/joml/Matrix4f;
+accessible field net/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState usesBlockLight Z
+accessible class net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo corners [Lnet/minecraft/core/Direction;
+accessible class net/minecraft/client/renderer/block/BlockModelLighter$AmbientVertexRemap
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo doNonCubicWeight Z
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$SizeInfo index I
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AmbientVertexRemap vert0 I
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AmbientVertexRemap vert1 I
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AmbientVertexRemap vert2 I
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AmbientVertexRemap vert3 I
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo vert0Weights [Lnet/minecraft/client/renderer/block/BlockModelLighter$SizeInfo;
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo vert1Weights [Lnet/minecraft/client/renderer/block/BlockModelLighter$SizeInfo;
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo vert2Weights [Lnet/minecraft/client/renderer/block/BlockModelLighter$SizeInfo;
+accessible field net/minecraft/client/renderer/block/BlockModelLighter$AdjacencyInfo vert3Weights [Lnet/minecraft/client/renderer/block/BlockModelLighter$SizeInfo;
+extendable method net/minecraft/world/entity/Entity isLocalInstanceAuthoritative ()Z
+extendable method net/minecraft/world/entity/Entity moveOrInterpolateTo (Lnet/minecraft/world/phys/Vec3;FF)V
+accessible method com/mojang/blaze3d/platform/Lighting updateBuffer (Lcom/mojang/blaze3d/platform/Lighting$Entry;Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;)V
+accessible field net/minecraft/client/renderer/block/BlockModelLighter cache Lnet/minecraft/client/renderer/block/BlockModelLighter$Cache;
+accessible field net/minecraft/client/renderer/block/BlockModelLighter scratchPos Lnet/minecraft/core/BlockPos$MutableBlockPos;
+accessible field net/minecraft/world/entity/LivingEntity swingState Lnet/minecraft/world/entity/LivingEntity$SwingState;
+accessible field net/minecraft/world/entity/LivingEntity$SwingState currentSwing Lnet/minecraft/world/entity/LivingEntity$SwingDescription;
+accessible method net/minecraft/client/player/AbstractClientPlayer getPlayerInfo ()Lnet/minecraft/client/multiplayer/PlayerInfo;

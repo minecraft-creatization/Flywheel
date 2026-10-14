@@ -1,0 +1,87 @@
+plugins {
+    id "net.fabricmc.fabric-loom" version "${loom_version}"
+}
+
+version = "${project.mod_version}+mc${project.minecraft_version}"
+group = project.maven_group
+
+base {
+    archivesName = "$project.archives_base_name-$project.minecraft_version"
+}
+
+loom {
+    splitEnvironmentSourceSets()
+    // Flywheel's backend is GL-only and 26.3 only exposes raw GL (GlDevice, the active texture
+    // unit, RenderType.create) through the classtweaker. See src/main/resources/flywheel.classtweaker.
+    accessWidenerPath = file("src/main/resources/flywheel.classtweaker")
+    mods {
+        flywheel {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+    runs {
+        client {
+            // -PflywheelPlayWorld="New World" jumps straight into a world instead of the main menu.
+            if (project.hasProperty("flywheelPlayWorld")) {
+                programArgs "--quickPlaySingleplayer", project.property("flywheelPlayWorld").toString()
+            }
+        }
+    }
+}
+
+sourceSets {
+    client {
+        java {
+            // Present in the tree but does not compile against 26.3; it is excluded in create-26.3
+            // for the same reason (see create-26.3/build.gradle) and stays excluded here.
+            exclude 'com/zurrtum/create/client/flywheel/lib/model/baked/DualVertexConsumer.java'
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    // Sodium/Iris integration is compile-only: CompatMod detects them at runtime.
+    clientCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    clientCompileOnly "maven.modrinth:iris:${project.iris_version}"
+    // FabricEmitterSupplier implements Fabric's QuadEmitter; the model-emitter mixins are gated on
+    // this module at runtime, so it is compile-only here too.
+    clientCompileOnly fabricApi.module("fabric-renderer-api-v1", project.fabric_version)
+    clientCompileOnly fabricApi.module("fabric-model-loading-api-v1", project.fabric_version)
+}
+
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' }
+        }
+        filter { includeGroup 'maven.modrinth' }
+    }
+}
+
+processResources {
+    def props = [
+        "version": project.version,
+        "minecraft_version": project.minecraft_version,
+        "loader_version": project.loader_version
+    ]
+    inputs.properties props
+    filesMatching("fabric.mod.json") {
+        expand props
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 25
+    // javac stops at 100 errors by default; the 26.3 port needs the whole list at once.
+    it.options.compilerArgs << "-Xmaxerrs" << "10000"
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
