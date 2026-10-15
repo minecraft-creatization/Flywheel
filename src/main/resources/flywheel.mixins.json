@@ -9,6 +9,7 @@
     "BlockEntityTypeMixin",
     "CameraRenderStateMixin",
     "ClientLevelDataMixin",
+    "ClientPackSourceMixin",
     "EntityTypeMixin",
     "FogRendererMixin",
     "GlStateManagerMixin",
